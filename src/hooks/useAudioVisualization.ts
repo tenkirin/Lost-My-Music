@@ -66,7 +66,7 @@ const useAudioVisualization = (selector: string) => {
 
     // get audio stream source
     const source = audioCtxRef.current.createMediaStreamSource(stream); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createMediaStreamSource
-    source.connect(analyserRef.current);
+    source.connect(analyserRef.current).connect(audioCtxRef.current.destination); // https://developer.mozilla.org/en-US/docs/Web/API/AudioNode/connect
 
     // visualize
     analyserRef.current.fftSize = 256;  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize

@@ -15,7 +15,10 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
       await audioRef.current.play();
 
       // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream
-      const stream = (audioRef.current as any).captureStream(); // https://stackoverflow.com/a/68044674
+      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#firefox-specific_notes
+      // https://stackoverflow.com/a/68044674
+      // https://stackoverflow.com/a/48623627
+      const stream = (audioRef.current as any).captureStream?.() ?? (audioRef.current as any).mozCaptureStream?.();
       visualize(stream);
     }
   };
