@@ -1,7 +1,7 @@
 ## Lost My Music
 
-> あした目が覚めたら
+> あした目が覚めたら　ほら
 >
-> ほら　希望が生まれるかも　Good night！
+> 希望が生まれるかも　Good night！
 
 A simple music player
