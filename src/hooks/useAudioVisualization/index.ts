@@ -5,7 +5,11 @@
 import { useRef } from 'react';
 import { drawCanvas, drawFloats } from './drawUtils';
 
-const useAudioVisualization = (selector: string) => {
+interface AudioVisualizationConfig {
+  barCount: number;
+}
+
+const useAudioVisualization = (selector: string, config?: AudioVisualizationConfig) => {
   const audioCtxRef = useRef<AudioContext>();
   const analyserRef = useRef<AnalyserNode>();
 
@@ -38,7 +42,8 @@ const useAudioVisualization = (selector: string) => {
 
     // frequencies array
     analyserRef.current.fftSize = 256;  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize
-    const bufferLength = analyserRef.current.frequencyBinCount; // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/frequencyBinCount
+    const defaultLength = analyserRef.current.frequencyBinCount; // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/frequencyBinCount
+    const bufferLength = Math.min(defaultLength, config?.barCount ?? Infinity);
     const frequencies = new Uint8Array(bufferLength); // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
     // draw for each frame

@@ -8,7 +8,7 @@ type PlayerProps = {
 const Player: FC<PlayerProps> = ({ audioSrc }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const { visualize } = useAudioVisualization('#canvas');
+  const { visualize } = useAudioVisualization('#canvas', { barCount: 80 });
 
   const onPlay = async () => {
     if (audioRef.current) {
