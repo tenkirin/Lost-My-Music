@@ -6,7 +6,8 @@ import {
   PUSH_DISTANCE,
   DROP_DISTANCE,
   FLOAT_COLOR,
-  CANVAS_BGCOLOR
+  CANVAS_BGCOLOR,
+  BAR_COLOR_STOPS
 } from '../../configs/canvasConfigs';
 
 import { CanvasData } from '../../types';
@@ -50,8 +51,17 @@ export const drawBars = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) =
     const x = spanWidth * i;
     const y = canvasHeight - barHeight;
 
+    // gradient color
+    const gradient = canvasCtx.createLinearGradient(
+      canvasWidth / 2, canvasHeight / 3,
+      canvasWidth / 2, canvasHeight,
+    ); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient
+    for (const [offset, color] of BAR_COLOR_STOPS) {
+      gradient.addColorStop(offset, color); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient/addColorStop
+    }
+
     // draw bars
-    canvasCtx.fillStyle = `rgb(${freq}, 255, 255)`;
+    canvasCtx.fillStyle = gradient;
     canvasCtx.fillRect(x, y, barWidth, barHeight);
   }
 };
