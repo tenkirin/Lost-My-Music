@@ -3,7 +3,7 @@
  */
 
 import { useRef } from 'react';
-import { drawCanvas } from './drawUtils';
+import { drawCanvas, drawFloats } from './drawUtils';
 
 const useAudioVisualization = (selector: string) => {
   const audioCtxRef = useRef<AudioContext>();
@@ -18,6 +18,7 @@ const useAudioVisualization = (selector: string) => {
       analyserRef.current.getByteFrequencyData(frequencies);  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
       drawCanvas(canvasEl, frequencies);
+      drawFloats(canvasEl, frequencies);
     }
   };
 

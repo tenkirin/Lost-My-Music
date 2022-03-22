@@ -23,8 +23,49 @@ export const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array)
     canvasCtx.fillStyle = `rgb(${freq}, 255, 255)`;
     canvasCtx.fillRect(x, y, barWidth, barHeight);
 
-    // draw numbers
-    canvasCtx.fillStyle = `rgb(${255 - freq}, 255, 255)`;
-    canvasCtx.fillText(String(i), x, y); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
+    // // draw numbers
+    // canvasCtx.fillStyle = `rgb(${255 - freq}, 255, 255)`;
+    // canvasCtx.fillText(String(i), x, y); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
+  }
+};
+
+// config constants
+const FLOAT_HEIGHT = 4;
+const PUSH_DISTANCE = 10;
+const DROP_DISTANCE = 1;
+
+const floatYs: number[] = [];
+export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+  const canvasCtx = canvasEl.getContext('2d');
+  if (!canvasCtx) return;
+
+  const { width, height } = canvasEl;
+
+  const xRatio = 0.7, yRatio = 0.9;
+  const spanWidth = width / frequencies.length;
+  const floatWidth = spanWidth * xRatio;
+
+  // compute the y coordinate for each float
+  for (const [i, freq] of frequencies.entries()) {
+    const heightRatio = freq / 255;
+    const barHeight = height * heightRatio * yRatio;
+    const minY = barHeight + FLOAT_HEIGHT;
+
+    // set default for the first time
+    floatYs[i] = floatYs[i] ?? minY;
+
+    // update states of current frame
+    floatYs[i] = freq > floatYs[i]
+      ? minY + PUSH_DISTANCE
+      : Math.max(minY, floatYs[i] - DROP_DISTANCE);
+  }
+
+  for (const [i, floatY] of floatYs.entries()) {
+    const x = spanWidth * i;
+    const y = height - floatY;
+
+    // draw floats
+    canvasCtx.fillStyle = 'teal';
+    canvasCtx.fillRect(x, y, floatWidth, FLOAT_HEIGHT);
   }
 };
