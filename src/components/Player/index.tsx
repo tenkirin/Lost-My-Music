@@ -1,4 +1,5 @@
 import { FC, useRef } from 'react';
+
 import useAudioVisualization from '../../hooks/useAudioVisualization';
 
 import { PlayerProps } from '../../types';

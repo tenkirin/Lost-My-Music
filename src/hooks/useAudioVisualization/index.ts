@@ -3,7 +3,9 @@
  */
 
 import { useRef } from 'react';
+
 import { drawBars, drawCanvas, drawFloats } from './drawUtils';
+import { isFirefox } from '../../utils/browser';
 
 import { FFT_SIZE } from '../../configs/audioConfigs';
 
@@ -37,9 +39,11 @@ const useAudioVisualization = (selector: string, config?: AudioVisualizationConf
 
     // get audio stream source & connect to analyser & destination
     const source = audioCtxRef.current.createMediaStreamSource(stream); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createMediaStreamSource
-    source
-      .connect(analyserRef.current)
-      .connect(audioCtxRef.current.destination); // https://developer.mozilla.org/en-US/docs/Web/API/AudioNode/connect
+    source.connect(analyserRef.current);  // https://developer.mozilla.org/en-US/docs/Web/API/AudioNode/connect
+    // TODO: find out the root casue of this usage
+    if (isFirefox) {
+      source.connect(audioCtxRef.current.destination);
+    }
 
     // frequencies array
     analyserRef.current.fftSize = FFT_SIZE;  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize
