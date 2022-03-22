@@ -1,9 +1,7 @@
 import { FC, useRef } from 'react';
 import useAudioVisualization from '../../hooks/useAudioVisualization';
 
-type PlayerProps = {
-  audioSrc: string;
-};
+import { PlayerProps } from '../../types';
 
 const Player: FC<PlayerProps> = ({ audioSrc }) => {
   const audioRef = useRef<HTMLAudioElement>(null);

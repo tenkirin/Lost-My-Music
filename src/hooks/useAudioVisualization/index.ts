@@ -5,9 +5,7 @@
 import { useRef } from 'react';
 import { drawCanvas, drawFloats } from './drawUtils';
 
-interface AudioVisualizationConfig {
-  barCount: number;
-}
+import { AudioVisualizationConfig } from '../../types';
 
 const useAudioVisualization = (selector: string, config?: AudioVisualizationConfig) => {
   const audioCtxRef = useRef<AudioContext>();

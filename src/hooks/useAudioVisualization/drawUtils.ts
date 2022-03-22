@@ -22,10 +22,6 @@ export const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array)
     // draw bars
     canvasCtx.fillStyle = `rgb(${freq}, 255, 255)`;
     canvasCtx.fillRect(x, y, barWidth, barHeight);
-
-    // // draw numbers
-    // canvasCtx.fillStyle = `rgb(${255 - freq}, 255, 255)`;
-    // canvasCtx.fillText(String(i), x, y); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
   }
 };
 
