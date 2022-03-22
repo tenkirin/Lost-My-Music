@@ -3,7 +3,9 @@
  */
 
 import { useRef } from 'react';
-import { drawCanvas, drawFloats } from './drawUtils';
+import { drawBars, drawCanvas, drawFloats } from './drawUtils';
+
+import { FFT_SIZE } from '../../configs/audioConfigs';
 
 import { AudioVisualizationConfig } from '../../types';
 
@@ -19,7 +21,8 @@ const useAudioVisualization = (selector: string, config?: AudioVisualizationConf
       // get data and fill frequencies array
       analyserRef.current.getByteFrequencyData(frequencies);  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
-      drawCanvas(canvasEl, frequencies);
+      drawCanvas(canvasEl);
+      drawBars(canvasEl, frequencies);
       drawFloats(canvasEl, frequencies);
     }
   };
@@ -39,7 +42,7 @@ const useAudioVisualization = (selector: string, config?: AudioVisualizationConf
       .connect(audioCtxRef.current.destination); // https://developer.mozilla.org/en-US/docs/Web/API/AudioNode/connect
 
     // frequencies array
-    analyserRef.current.fftSize = 256;  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize
+    analyserRef.current.fftSize = FFT_SIZE;  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize
     const defaultLength = analyserRef.current.frequencyBinCount; // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/frequencyBinCount
     const bufferLength = Math.min(defaultLength, config?.barCount ?? Infinity);
     const frequencies = new Uint8Array(bufferLength); // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData

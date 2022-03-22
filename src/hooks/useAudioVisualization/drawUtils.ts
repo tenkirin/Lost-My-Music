@@ -1,23 +1,54 @@
-export const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+import { FREQUENCY } from '../../configs/audioConfigs';
+import {
+  X_RATIO,
+  Y_RATIO,
+  FLOAT_HEIGHT,
+  PUSH_DISTANCE,
+  DROP_DISTANCE,
+  FLOAT_COLOR,
+  CANVAS_BGCOLOR
+} from '../../configs/canvasConfigs';
+
+import { CanvasData } from '../../types';
+
+const getCanvasData = (canvasEl: HTMLCanvasElement): CanvasData => {
   const canvasCtx = canvasEl.getContext('2d');  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-  if (!canvasCtx) return;
+  if (!canvasCtx) throw new Error('no canvas context');
 
-  const { width, height } = canvasEl;
+  const { width: canvasWidth, height: canvasHeight } = canvasEl;
 
-  // draw background
-  canvasCtx.fillStyle = '#ccc'; // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
-  canvasCtx.fillRect(0, 0, width, height); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect
+  return {
+    canvasCtx,
+    canvasWidth,
+    canvasHeight,
+  };
+};
 
-  const xRatio = 0.7, yRatio = 0.9;
-  const spanWidth = width / frequencies.length;
-  const barWidth = spanWidth * xRatio;
+const getBarWidth = (canvasWidth: number, barCount: number) => {
+  const spanWidth = canvasWidth / barCount;
+  const barWidth = spanWidth * X_RATIO;
+
+  return {
+    spanWidth,
+    barWidth,
+  };
+};
+
+const getBarHeight = (freq: number, canvasHeight: number) => {
+  const heightRatio = freq / FREQUENCY;
+  const barHeight = canvasHeight * heightRatio * Y_RATIO;
+
+  return barHeight;
+};
+
+export const drawBars = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+  const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
+  const { spanWidth, barWidth } = getBarWidth(canvasWidth, frequencies.length);
 
   for (const [i, freq] of frequencies.entries()) {
-    const heightRatio = freq / 255;
-    const barHeight = height * heightRatio * yRatio;
-
+    const barHeight = getBarHeight(freq, canvasHeight);
     const x = spanWidth * i;
-    const y = height - barHeight;
+    const y = canvasHeight - barHeight;
 
     // draw bars
     canvasCtx.fillStyle = `rgb(${freq}, 255, 255)`;
@@ -25,26 +56,14 @@ export const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array)
   }
 };
 
-// config constants
-const FLOAT_HEIGHT = 4;
-const PUSH_DISTANCE = 10;
-const DROP_DISTANCE = 1;
-
 const floatYs: number[] = [];
 export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
-  const canvasCtx = canvasEl.getContext('2d');
-  if (!canvasCtx) return;
-
-  const { width, height } = canvasEl;
-
-  const xRatio = 0.7, yRatio = 0.9;
-  const spanWidth = width / frequencies.length;
-  const floatWidth = spanWidth * xRatio;
+  const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
+  const { spanWidth, barWidth: floatWidth } = getBarWidth(canvasWidth, frequencies.length);
 
   // compute the y coordinate for each float
   for (const [i, freq] of frequencies.entries()) {
-    const heightRatio = freq / 255;
-    const barHeight = height * heightRatio * yRatio;
+    const barHeight = getBarHeight(freq, canvasHeight);
     const minY = barHeight + FLOAT_HEIGHT;
 
     // set default for the first time
@@ -58,10 +77,18 @@ export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array)
 
   for (const [i, floatY] of floatYs.entries()) {
     const x = spanWidth * i;
-    const y = height - floatY;
+    const y = canvasHeight - floatY;
 
     // draw floats
-    canvasCtx.fillStyle = 'teal';
+    canvasCtx.fillStyle = FLOAT_COLOR;
     canvasCtx.fillRect(x, y, floatWidth, FLOAT_HEIGHT);
   }
+};
+
+export const drawCanvas = (canvasEl: HTMLCanvasElement) => {
+  const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
+
+  // draw background
+  canvasCtx.fillStyle = CANVAS_BGCOLOR; // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
+  canvasCtx.fillRect(0, 0, canvasWidth, canvasHeight); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect
 };
