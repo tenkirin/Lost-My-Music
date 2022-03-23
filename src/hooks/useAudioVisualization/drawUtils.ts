@@ -95,7 +95,7 @@ export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array)
   }
 };
 
-export const drawCanvas = (canvasEl: HTMLCanvasElement) => {
+export const drawBackground = (canvasEl: HTMLCanvasElement) => {
   const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
 
   // draw background

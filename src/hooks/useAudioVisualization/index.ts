@@ -4,16 +4,22 @@
 
 import { useRef } from 'react';
 
-import { drawBars, drawCanvas, drawFloats } from './drawUtils';
+import { drawBackground, drawBars, drawFloats } from './drawUtils';
 import { isFirefox } from '../../utils/browser';
 
 import { FFT_SIZE } from '../../configs/audioConfigs';
 
 import { AudioVisualizationConfig } from '../../types';
 
-const useAudioVisualization = (selector: string, config?: AudioVisualizationConfig) => {
+const useAudioVisualization = () => {
   const audioCtxRef = useRef<AudioContext>();
   const analyserRef = useRef<AnalyserNode>();
+
+  const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+    drawBackground(canvasEl);
+    drawBars(canvasEl, frequencies);
+    drawFloats(canvasEl, frequencies);
+  };
 
   const drawEachFrame = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
     // draw for each animation frame
@@ -23,16 +29,11 @@ const useAudioVisualization = (selector: string, config?: AudioVisualizationConf
       // get data and fill frequencies array
       analyserRef.current.getByteFrequencyData(frequencies);  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
-      drawCanvas(canvasEl);
-      drawBars(canvasEl, frequencies);
-      drawFloats(canvasEl, frequencies);
+      drawCanvas(canvasEl, frequencies);
     }
   };
 
-  const visualize = (stream: MediaStream) => {
-    const canvasEl: HTMLCanvasElement | null = document.querySelector(selector);
-    if (!canvasEl) throw new Error('canvas element not found');
-
+  const visualize = (stream: MediaStream, canvasEl: HTMLCanvasElement, config?: AudioVisualizationConfig) => {
     // create Analyser
     audioCtxRef.current = new AudioContext(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
     analyserRef.current = audioCtxRef.current.createAnalyser(); // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
@@ -55,7 +56,7 @@ const useAudioVisualization = (selector: string, config?: AudioVisualizationConf
     drawEachFrame(canvasEl, frequencies);
   };
 
-  return { visualize };
+  return { visualize, drawCanvas };
 };
 
 export default useAudioVisualization;

@@ -1,3 +1,5 @@
+import { AudioVisualizationConfig } from '../types';
+
 export const CANVAS_BGCOLOR = 'rgb(29, 19, 62)';
 
 // X_RATIO = barWidth/spanWidth
@@ -12,7 +14,11 @@ export const PUSH_DISTANCE = 10;
 export const DROP_DISTANCE = 1;
 
 export const BAR_COLOR_STOPS: [number, string][] = [
-  [0, '#69b5ee'],
+  [0, '#5cb7ff'],
   [0.5, '#4c60cb'],
-  [1, '#69b5ee'],
+  [1, '#5cb7ff'],
 ];
+
+export const VISUAL_CONFIG: AudioVisualizationConfig = {
+  barCount: 80
+};
