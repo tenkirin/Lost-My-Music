@@ -1,9 +1,11 @@
 import { AudioVisualizationConfig } from '../types';
 
+export const CANVAS_WIDTH = 720;
+export const CANVAS_HEIGHT = 405;
 export const CANVAS_BGCOLOR = 'rgb(29, 19, 62)';
 
 // X_RATIO = barWidth/spanWidth
-export const X_RATIO = 0.7;
+export const X_RATIO = 0.8;
 
 // Y_RATIO = maxBarHeight/canvasHeight
 export const Y_RATIO = 0.9;

@@ -4,7 +4,9 @@ import useAudioVisualization from '../../hooks/useAudioVisualization';
 
 import { PlayerProps } from '../../types';
 
-import { VISUAL_CONFIG } from '../../configs/canvasConfigs';
+import { CANVAS_HEIGHT, CANVAS_WIDTH, VISUAL_CONFIG } from '../../configs/canvasConfigs';
+
+import styles from './styles.module.scss';
 
 const Player: FC<PlayerProps> = ({ audioSrc }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -33,18 +35,21 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
   }, [drawCanvas]);
 
   return (
-    <div>
-      <canvas id="visualizer" ref={canvasRef} width={1080} height={675} />
+    <div className={styles.player}>
+      {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#sizing_the_canvas_using_css_versus_html */}
+      <canvas id='visualizer' ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
 
-      {/* https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement */}
-      {/* https://stackoverflow.com/a/69167223 */}
-      <audio
-        ref={audioRef}
-        src={audioSrc}
-        onPlay={onPlay}
-        controls
-        controlsList="nodownload noplaybackrate"
-      />
+      <div className={styles['audio-control']}>
+        {/* https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement */}
+        {/* https://stackoverflow.com/a/69167223 */}
+        <audio
+          ref={audioRef}
+          src={audioSrc}
+          onPlay={onPlay}
+          controls
+          controlsList="nodownload noplaybackrate"
+        />
+      </div>
     </div>
   );
 };

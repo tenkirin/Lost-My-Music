@@ -1,0 +1,19 @@
+.player {
+  background-color: #404264;
+  border-radius: 4px;
+  padding: 16px;
+
+  canvas {
+    border: 4px solid #000;
+    border-radius: 4px;
+  }
+
+  .audio-control {
+    margin-top: 8px;
+
+    audio {
+      display: block;
+      width: 100%;
+    }
+  }
+}
