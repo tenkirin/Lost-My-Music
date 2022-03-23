@@ -12,20 +12,35 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { visualize, drawCanvas } = useAudioVisualization();
+  const {
+    startVisualization,
+    // cancelVisualization,
+    drawCanvas
+  } = useAudioVisualization();
 
   const onPlay = async () => {
     if (audioRef.current) {
-      await audioRef.current.play();
+      // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+      try {
+        await audioRef.current.play();
+        console.log('playing');
 
-      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream
-      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#firefox-specific_notes
-      // https://stackoverflow.com/a/68044674
-      // https://stackoverflow.com/a/48623627
-      const stream = (audioRef.current as any).captureStream?.() ?? (audioRef.current as any).mozCaptureStream?.();
-      if (!canvasRef.current) throw new Error('canvas element not found');
-      visualize(stream, canvasRef.current, VISUAL_CONFIG);
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#firefox-specific_notes
+        // https://stackoverflow.com/a/68044674
+        // https://stackoverflow.com/a/48623627
+        const stream = (audioRef.current as any).captureStream?.() ?? (audioRef.current as any).mozCaptureStream?.();
+        if (!canvasRef.current) throw new Error('canvas element not found');
+        startVisualization(stream, canvasRef.current, VISUAL_CONFIG);
+      } catch (err) {
+        console.error('interrupted');
+      }
     }
+  };
+
+  const onPause = () => {
+    // cancelVisualization();
+    console.log('paused');
   };
 
   useEffect(() => {
@@ -46,6 +61,7 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
           ref={audioRef}
           src={audioSrc}
           onPlay={onPlay}
+          onPause={onPause}
           controls
           controlsList="nodownload noplaybackrate"
         />

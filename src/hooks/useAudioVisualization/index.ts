@@ -14,8 +14,10 @@ import { AudioVisualizationConfig } from '../../types';
 const useAudioVisualization = () => {
   const audioCtxRef = useRef<AudioContext>();
   const analyserRef = useRef<AnalyserNode>();
+  const animationFrameIDRef = useRef<number>();
 
   const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+    console.log(animationFrameIDRef.current);
     drawBackground(canvasEl);
     drawBars(canvasEl, frequencies);
     drawFloats(canvasEl, frequencies);
@@ -23,7 +25,9 @@ const useAudioVisualization = () => {
 
   const drawEachFrame = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
     // draw for each animation frame
-    requestAnimationFrame(() => drawEachFrame(canvasEl, frequencies));  // https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame
+    animationFrameIDRef.current = requestAnimationFrame(
+      () => drawEachFrame(canvasEl, frequencies)
+    );  // https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame
 
     if (analyserRef.current) {
       // get data and fill frequencies array
@@ -33,7 +37,10 @@ const useAudioVisualization = () => {
     }
   };
 
-  const visualize = (stream: MediaStream, canvasEl: HTMLCanvasElement, config?: AudioVisualizationConfig) => {
+  const startVisualization = (stream: MediaStream, canvasEl: HTMLCanvasElement, config?: AudioVisualizationConfig) => {
+    // cancel last time visualization
+    cancelVisualization();
+
     // create Analyser
     audioCtxRef.current = new AudioContext(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
     analyserRef.current = audioCtxRef.current.createAnalyser(); // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
@@ -56,7 +63,18 @@ const useAudioVisualization = () => {
     drawEachFrame(canvasEl, frequencies);
   };
 
-  return { visualize, drawCanvas };
+  const cancelVisualization = () => {
+    if (animationFrameIDRef.current) {
+      cancelAnimationFrame(animationFrameIDRef.current);
+      animationFrameIDRef.current = 0;
+    }
+  };
+
+  return {
+    startVisualization,
+    cancelVisualization,
+    drawCanvas
+  };
 };
 
 export default useAudioVisualization;
