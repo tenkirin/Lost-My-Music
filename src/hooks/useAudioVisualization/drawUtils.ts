@@ -66,8 +66,7 @@ export const drawBars = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) =
   }
 };
 
-const floatYs: number[] = [];
-export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+export const drawFloats = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array, floatYs: number[]) => {
   const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
   const { spanWidth, barWidth: floatWidth } = getBarWidth(canvasWidth, frequencies.length);
 

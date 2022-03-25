@@ -10,40 +10,51 @@ import { isFirefox } from '../../utils/browser';
 import { FFT_SIZE } from '../../configs/audioConfigs';
 
 import { AudioVisualizationConfig } from '../../types';
+import { FLOAT_HEIGHT } from '../../configs/canvasConfigs';
 
-const useAudioVisualization = () => {
+const useAudioVisualization = (config?: AudioVisualizationConfig) => {
   const audioCtxRef = useRef<AudioContext>();
   const analyserRef = useRef<AnalyserNode>();
   const animationFrameIDRef = useRef<number>();
+  const floatYs = useRef<number[]>([]);
 
   const drawCanvas = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
-    console.log(animationFrameIDRef.current);
     drawBackground(canvasEl);
     drawBars(canvasEl, frequencies);
-    drawFloats(canvasEl, frequencies);
+    drawFloats(canvasEl, frequencies, floatYs.current);
   };
 
-  const drawEachFrame = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
-    // draw for each animation frame
-    animationFrameIDRef.current = requestAnimationFrame(
-      () => drawEachFrame(canvasEl, frequencies)
-    );  // https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame
-
+  const drawEachFrame = (audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
     if (analyserRef.current) {
       // get data and fill frequencies array
       analyserRef.current.getByteFrequencyData(frequencies);  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
       drawCanvas(canvasEl, frequencies);
+
+      const isAllSettled = floatYs.current.every(floatY => floatY === FLOAT_HEIGHT);
+      const isPlaying = !audioEl.paused && !audioEl.ended; // https://stackoverflow.com/a/6877530
+      if (isPlaying || !isAllSettled) {
+        // draw for each animation frame until all floats settled
+        animationFrameIDRef.current = requestAnimationFrame(
+          () => drawEachFrame(audioEl, canvasEl, frequencies)
+        );  // https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame
+      }
     }
   };
 
-  const startVisualization = (stream: MediaStream, canvasEl: HTMLCanvasElement, config?: AudioVisualizationConfig) => {
-    // cancel last time visualization
+  const startVisualization = (audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement) => {
+    // cancel last time visualization to avoid mixed animation: only one animation at the same time
     cancelVisualization();
 
     // create Analyser
     audioCtxRef.current = new AudioContext(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
     analyserRef.current = audioCtxRef.current.createAnalyser(); // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#firefox-specific_notes
+    // https://stackoverflow.com/a/68044674
+    // https://stackoverflow.com/a/48623627
+    const stream = (audioEl as any).captureStream?.() ?? (audioEl as any).mozCaptureStream?.();
 
     // get audio stream source & connect to analyser & destination
     const source = audioCtxRef.current.createMediaStreamSource(stream); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createMediaStreamSource
@@ -60,7 +71,7 @@ const useAudioVisualization = () => {
     const frequencies = new Uint8Array(bufferLength); // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
 
     // draw for each frame
-    drawEachFrame(canvasEl, frequencies);
+    drawEachFrame(audioEl, canvasEl, frequencies);
   };
 
   const cancelVisualization = () => {

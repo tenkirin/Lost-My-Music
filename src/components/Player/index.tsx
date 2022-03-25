@@ -14,33 +14,22 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
 
   const {
     startVisualization,
-    // cancelVisualization,
     drawCanvas
-  } = useAudioVisualization();
+  } = useAudioVisualization(VISUAL_CONFIG);
 
   const onPlay = async () => {
     if (audioRef.current) {
       // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
       try {
         await audioRef.current.play();
-        console.log('playing');
 
-        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream
-        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#firefox-specific_notes
-        // https://stackoverflow.com/a/68044674
-        // https://stackoverflow.com/a/48623627
-        const stream = (audioRef.current as any).captureStream?.() ?? (audioRef.current as any).mozCaptureStream?.();
         if (!canvasRef.current) throw new Error('canvas element not found');
-        startVisualization(stream, canvasRef.current, VISUAL_CONFIG);
+        startVisualization(audioRef.current, canvasRef.current);
       } catch (err) {
-        console.error('interrupted');
+        // ignore interrupted play() request error and rethrow other errors
+        if (err instanceof Error && !err.message.includes('interrupted')) throw err;
       }
     }
-  };
-
-  const onPause = () => {
-    // cancelVisualization();
-    console.log('paused');
   };
 
   useEffect(() => {
@@ -61,7 +50,6 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
           ref={audioRef}
           src={audioSrc}
           onPlay={onPlay}
-          onPause={onPause}
           controls
           controlsList="nodownload noplaybackrate"
         />
