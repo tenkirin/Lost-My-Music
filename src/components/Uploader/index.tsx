@@ -6,11 +6,12 @@ import { UploaderProps } from '../../types';
 
 import styles from './styles.module.scss';
 
-const Uploader: FC<UploaderProps> = ({ setAudioSrc, addAudios }) => {
+const Uploader: FC<UploaderProps> = ({ addAudios }) => {
   const onChange: ChangeEventHandler<HTMLInputElement> = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.target.files) {
-      const blobUrl = URL.createObjectURL(evt.target.files[0]);
-      setAudioSrc(blobUrl);
+    if (evt.target.files?.length) { // https://stackoverflow.com/a/66985035
+      const [file] = evt.target.files;
+      // TODO: release unused object URL
+      const blobUrl = URL.createObjectURL(file); // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
       addAudios(blobUrl);
     }
   };

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, MouseEvent, MouseEventHandler, useState } from 'react';
 
 import Uploader from '../Uploader';
 
@@ -14,13 +14,29 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
     setAudios([newAudio, ...audios]);
   };
 
+  const onClick: MouseEventHandler<HTMLLIElement> = (evt: MouseEvent<HTMLLIElement>) => {
+    const listItem = evt.target as HTMLLIElement;
+    if (listItem) {
+      const audioSrc = listItem.dataset.audioSrc;
+      if (audioSrc) setAudioSrc(audioSrc);
+    }
+  };
+
   return (
     <div>
       <ul>
-        {[...audios].map(audio => <li key={audio} data-audio-src={audio}>{audio}</li>)}
+        {[...audios].map(audio => (
+          <li
+            key={audio}
+            data-audio-src={audio}
+            onClick={onClick}
+          >
+            {audio}
+          </li>
+        ))}
       </ul>
 
-      <Uploader setAudioSrc={setAudioSrc} addAudios={addAudios} />
+      <Uploader addAudios={addAudios} />
     </div>
   );
 };
