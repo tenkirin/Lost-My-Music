@@ -1,0 +1,9 @@
+.uploader {
+  display: block;
+  margin-top: 16px;
+  color: #fff;
+
+  input[type="file"] {
+    display: none;
+  }
+}
