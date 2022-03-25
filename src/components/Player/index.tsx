@@ -14,7 +14,7 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
 
   const {
     startVisualization,
-    drawCanvas
+    initVisualization,
   } = useAudioVisualization(VISUAL_CONFIG);
 
   const onPlay = async () => {
@@ -34,9 +34,9 @@ const Player: FC<PlayerProps> = ({ audioSrc }) => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      drawCanvas(canvasRef.current, new Uint8Array(VISUAL_CONFIG.barCount).fill(0));
+      initVisualization(canvasRef.current);
     }
-  }, [drawCanvas]);
+  }, [initVisualization]);
 
   return (
     <div className={styles.player}>

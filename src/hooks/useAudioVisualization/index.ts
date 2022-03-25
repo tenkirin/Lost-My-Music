@@ -81,10 +81,16 @@ const useAudioVisualization = (config?: AudioVisualizationConfig) => {
     }
   };
 
+  const initVisualization = (canvasEl: HTMLCanvasElement) => {
+    const defaultLength = FFT_SIZE / 2; // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/frequencyBinCount#value
+    const bufferLength = Math.min(defaultLength, config?.barCount ?? Infinity);
+    drawCanvas(canvasEl, new Uint8Array(bufferLength).fill(0));
+  };
+
   return {
+    initVisualization,
     startVisualization,
     cancelVisualization,
-    drawCanvas
   };
 };
 
