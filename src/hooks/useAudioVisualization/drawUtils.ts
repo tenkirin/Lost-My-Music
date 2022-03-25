@@ -53,7 +53,7 @@ export const drawBars = (canvasEl: HTMLCanvasElement, frequencies: Uint8Array) =
 
     // gradient color
     const gradient = canvasCtx.createLinearGradient(
-      canvasWidth / 2, canvasHeight / 3,
+      canvasWidth / 2, canvasHeight / 2,
       canvasWidth / 2, canvasHeight,
     ); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient
     for (const [offset, color] of BAR_COLOR_STOPS) {

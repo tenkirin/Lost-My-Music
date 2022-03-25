@@ -16,9 +16,9 @@ export const PUSH_DISTANCE = 10;
 export const DROP_DISTANCE = 1;
 
 export const BAR_COLOR_STOPS: [number, string][] = [
-  [0, '#5cb7ff'],
+  [0, '#68b3ec'],
   [0.5, '#4c60cb'],
-  [1, '#5cb7ff'],
+  [1, '#68b3ec'],
 ];
 
 export const VISUAL_CONFIG: AudioVisualizationConfig = {
