@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface AudioVisualizationConfig {
   barCount: number;
@@ -17,5 +17,3 @@ export interface UploaderProps {
 export interface PlayListProps {
   setAudioSrc: Dispatch<SetStateAction<string>>;
 }
-
-export type EventHanlderWithBoundArgs<E extends SyntheticEvent> = (boundArgs: unknown[], evt: E) => void;
