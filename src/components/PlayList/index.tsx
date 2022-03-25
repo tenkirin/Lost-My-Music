@@ -4,7 +4,7 @@ import Uploader from '../Uploader';
 
 import { PRESET_AUDIOS } from '../../configs/audioConfigs';
 
-import { PlayListProps } from '../../types';
+import { HanlderFactory, PlayListProps } from '../../types';
 
 const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
   // TODO: use Set & MD5 to eliminate duplication
@@ -14,12 +14,12 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
     setAudios([newAudio, ...audios]);
   };
 
-  const onClick: MouseEventHandler<HTMLLIElement> = (evt: MouseEvent<HTMLLIElement>) => {
-    const listItem = evt.target as HTMLLIElement;
-    if (listItem) {
-      const audioSrc = listItem.dataset.audioSrc;
-      if (audioSrc) setAudioSrc(audioSrc);
-    }
+  const getOnClick: HanlderFactory<MouseEventHandler> = (...scopeArgs) => {
+    const [audio] = scopeArgs;
+    const onClick: MouseEventHandler<HTMLLIElement> = (_evt: MouseEvent<HTMLLIElement>) => {
+      if (typeof audio === 'string') setAudioSrc(audio);
+    };
+    return onClick;
   };
 
   return (
@@ -28,8 +28,7 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
         {[...audios].map(audio => (
           <li
             key={audio}
-            data-audio-src={audio}
-            onClick={onClick}
+            onClick={getOnClick(audio)}
           >
             {audio}
           </li>

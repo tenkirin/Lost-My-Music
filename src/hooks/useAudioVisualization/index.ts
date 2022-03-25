@@ -5,12 +5,13 @@
 import { useRef } from 'react';
 
 import { drawBackground, drawBars, drawFloats } from './drawUtils';
+
 import { isFirefox } from '../../utils/browser';
 
 import { FFT_SIZE } from '../../configs/audioConfigs';
+import { FLOAT_HEIGHT } from '../../configs/canvasConfigs';
 
 import { AudioVisualizationConfig } from '../../types';
-import { FLOAT_HEIGHT } from '../../configs/canvasConfigs';
 
 const useAudioVisualization = (config?: AudioVisualizationConfig) => {
   const audioCtxRef = useRef<AudioContext>();
