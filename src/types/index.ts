@@ -1,4 +1,4 @@
-import { Dispatch, EventHandler, SetStateAction, SyntheticEvent } from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
 
 export interface AudioVisualizationConfig {
   barCount: number;
@@ -18,4 +18,4 @@ export interface PlayListProps {
   setAudioSrc: Dispatch<SetStateAction<string>>;
 }
 
-export type HanlderFactory<T extends EventHandler<SyntheticEvent>> = (...scopeArgs: unknown[]) => T;
+export type EventHanlderWithBoundArgs<E extends SyntheticEvent> = (boundArgs: unknown[], evt: E) => void;

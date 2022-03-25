@@ -1,10 +1,10 @@
-import { FC, MouseEvent, MouseEventHandler, useState } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 
 import Uploader from '../Uploader';
 
 import { PRESET_AUDIOS } from '../../configs/audioConfigs';
 
-import { HanlderFactory, PlayListProps } from '../../types';
+import { EventHanlderWithBoundArgs, PlayListProps } from '../../types';
 
 const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
   // TODO: use Set & MD5 to eliminate duplication
@@ -14,12 +14,11 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
     setAudios([newAudio, ...audios]);
   };
 
-  const getOnClick: HanlderFactory<MouseEventHandler> = (...scopeArgs) => {
-    const [audio] = scopeArgs;
-    const onClick: MouseEventHandler<HTMLLIElement> = (_evt: MouseEvent<HTMLLIElement>) => {
-      if (typeof audio === 'string') setAudioSrc(audio);
-    };
-    return onClick;
+  const onClick: EventHanlderWithBoundArgs<MouseEvent<HTMLLIElement>> = (
+    boundArgs: unknown[], _evt: MouseEvent<HTMLLIElement>
+  ) => {
+    const [audio] = boundArgs;
+    if (typeof audio === 'string') setAudioSrc(audio);
   };
 
   return (
@@ -28,7 +27,7 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
         {[...audios].map(audio => (
           <li
             key={audio}
-            onClick={getOnClick(audio)}
+            onClick={onClick.bind(null, [audio])}
           >
             {audio}
           </li>
