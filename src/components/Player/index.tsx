@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 
-import Uploader from '../Uploader';
+import PlayList from '../PlayList';
 
 import useAudioVisualization from '../../hooks/useAudioVisualization';
 
@@ -59,7 +59,7 @@ const Player: FC = () => {
         />
       </div>
 
-      <Uploader setAudioSrc={setAudioSrc} />
+      <PlayList setAudioSrc={setAudioSrc} />
     </div>
   );
 };

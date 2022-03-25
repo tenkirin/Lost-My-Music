@@ -6,11 +6,12 @@ import { UploaderProps } from '../../types';
 
 import styles from './styles.module.scss';
 
-const Uploader: FC<UploaderProps> = ({ setAudioSrc }) => {
+const Uploader: FC<UploaderProps> = ({ setAudioSrc, addAudios }) => {
   const onChange: ChangeEventHandler<HTMLInputElement> = (evt: ChangeEvent<HTMLInputElement>) => {
     if (evt.target.files) {
       const blobUrl = URL.createObjectURL(evt.target.files[0]);
       setAudioSrc(blobUrl);
+      addAudios(blobUrl);
     }
   };
 

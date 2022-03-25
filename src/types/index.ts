@@ -12,4 +12,9 @@ export interface CanvasData {
 
 export interface UploaderProps {
   setAudioSrc: Dispatch<SetStateAction<string>>;
+  addAudios: (newAudio: string) => void;
+}
+
+export interface PlayListProps {
+  setAudioSrc: Dispatch<SetStateAction<string>>;
 }
