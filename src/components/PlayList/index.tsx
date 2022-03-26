@@ -4,16 +4,16 @@ import Uploader from '../Uploader';
 
 import { PRESET_AUDIOS } from '../../configs/audioConfigs';
 
-import { PlayListProps } from '../../types';
+import { AudioInfo, PlayListProps } from '../../types';
 
 import styles from './styles.module.scss';
 import parentStyles from '../Player/styles.module.scss';
 
-const PlayList: FC<PlayListProps> = ({ setAudioSrc, currentAudio }) => {
+const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
   // TODO: use Set & MD5 to eliminate duplication
-  const [audios, setAudios] = useState<string[]>(PRESET_AUDIOS);
+  const [audios, setAudios] = useState<AudioInfo[]>(PRESET_AUDIOS);
 
-  const addAudios = (newAudio: string) => {
+  const addAudios = (newAudio: AudioInfo) => {
     setAudios([newAudio, ...audios]);
   };
 
@@ -22,13 +22,13 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc, currentAudio }) => {
       <h2>Playlist</h2>
 
       <ul>
-        {[...audios].map(audio => (
+        {[...audios].map(({ name, src }) => (
           <li
-            key={audio}
-            onClick={() => setAudioSrc(audio)}
-            className={audio === currentAudio ? 'selected' : ''}
+            key={src}
+            onClick={() => setCurrentAudio({ name, src })}
+            className={src === currentAudio.src ? 'selected' : ''}
           >
-            {audio}
+            {name}
           </li>
         ))}
       </ul>

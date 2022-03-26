@@ -5,16 +5,18 @@ import PlayList from '../PlayList';
 import useAudioVisualization from '../../hooks/useAudioVisualization';
 
 import { CANVAS_HEIGHT, CANVAS_WIDTH, VISUAL_CONFIG } from '../../configs/canvasConfigs';
+import { PRESET_AUDIOS } from '../../configs/audioConfigs';
 
 import styles from './styles.module.scss';
 
-import lmmSrc from '../../assets/平野綾 - Lost my music.flac';
+import { AudioInfo } from '../../types';
+
 
 const Player: FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [audioSrc, setAudioSrc] = useState<string>(lmmSrc);
+  const [currentAudio, setCurrentAudio] = useState<AudioInfo>(PRESET_AUDIOS[0]);
 
   const {
     startVisualization,
@@ -45,7 +47,7 @@ const Player: FC = () => {
   return (
     <div className={styles.player}>
       <main className={styles['player-main']}>
-        <h2>Current: {audioSrc}</h2>
+        <h2>Current: {currentAudio.name}</h2>
 
         {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#sizing_the_canvas_using_css_versus_html */}
         <canvas id='visualizer' ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
@@ -55,7 +57,7 @@ const Player: FC = () => {
           {/* https://stackoverflow.com/a/69167223 */}
           <audio
             ref={audioRef}
-            src={audioSrc}
+            src={currentAudio.src}
             onPlay={onPlay}
             controls
             controlsList="nodownload noplaybackrate"
@@ -63,7 +65,7 @@ const Player: FC = () => {
         </div>
       </main>
 
-      <PlayList setAudioSrc={setAudioSrc} currentAudio={audioSrc} />
+      <PlayList setCurrentAudio={setCurrentAudio} currentAudio={currentAudio} />
     </div>
   );
 };

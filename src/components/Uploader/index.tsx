@@ -13,7 +13,12 @@ const Uploader: FC<UploaderProps> = ({ addAudios }) => {
       const [file] = evt.target.files;
       // TODO: release unused object URL
       const blobUrl = URL.createObjectURL(file); // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-      addAudios(blobUrl);
+      const lastDotIdx = file.name.lastIndexOf('.');
+      const filename = file.name.slice(0, ~lastDotIdx ? lastDotIdx : file.name.length);
+      addAudios({
+        name: filename,
+        src: blobUrl
+      });
     }
   };
 
