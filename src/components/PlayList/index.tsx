@@ -19,6 +19,8 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc, currentAudio }) => {
 
   return (
     <div className={`${styles.playlist} ${parentStyles.playlist}`}>
+      <h2>Playlist</h2>
+
       <ul>
         {[...audios].map(audio => (
           <li

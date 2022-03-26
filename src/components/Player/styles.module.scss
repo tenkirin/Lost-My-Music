@@ -1,9 +1,31 @@
 .player {
   display: flex;
   flex-flow: row nowrap;
-  background-color: #404264;
+  background: linear-gradient(
+    0,
+    #181929,
+    15%,
+    #404264,
+    85%,
+    #181929,
+    100%,
+    #404264
+  );
   border-radius: 8px;
   padding: 16px;
+
+  h2 {
+    width: 100%;
+    padding: 8px;
+    margin: 0;
+    margin-bottom: 4px;
+    color: #eee;
+    font-size: 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-image: linear-gradient(#404264, #10111a, #404264);
+    user-select: none;
+  }
 
   .player-main {
     canvas {
