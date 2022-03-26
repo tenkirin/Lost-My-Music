@@ -11,7 +11,7 @@ export interface CanvasData {
 }
 
 export interface UploaderProps {
-  addAudios: (newAudio: AudioInfo) => void;
+  addAudios: (newAudio: AudioInfo | AudioInfo[]) => void;
 }
 
 export interface PlayListProps {
