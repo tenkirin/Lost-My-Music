@@ -24,27 +24,23 @@
       font-size: 14px;
       line-height: 24px;
       box-sizing: border-box;
-      border-top: 1px solid rgba(255, 255, 255, 0.5);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      margin: -0.5px 0;
       color: #8e94b3;
       cursor: pointer;
       user-select: none;
-      transition: all 0.2s;
+      transition: background-color 0.2s, color 0.2s;
 
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
 
       &:first-child {
-        border-top: none;
+        margin-top: -1px;
       }
 
       &:last-child {
-        border-bottom: 1.5px solid rgba(255, 255, 255, 0.65);
-      }
-
-      & + li {
-        margin: -0.5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.75);
       }
 
       &:hover {
