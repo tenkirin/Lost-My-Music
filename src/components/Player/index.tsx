@@ -17,6 +17,7 @@ const Player: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [currentAudio, setCurrentAudio] = useState<AudioInfo>(PRESET_AUDIOS[0]);
+  const [currentTime, setCurrentTime] = useState<string>('00:00');
 
   const {
     startVisualization,
@@ -44,10 +45,23 @@ const Player: FC = () => {
     }
   }, [initVisualization]);
 
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      if (audioRef.current) {
+        const currentTime = audioRef.current.currentTime; // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime
+        const toPaddedStr: (n: number) => string = time => String(time).padStart(2, '0'); // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+        const minute = toPaddedStr(Math.trunc(currentTime / 60));
+        const second = toPaddedStr(Math.trunc(currentTime % 60));
+        setCurrentTime(`${minute}:${second}`);
+      }
+    }, 500); // https://developer.mozilla.org/en-US/docs/Web/API/setInterval
+    return () => clearInterval(intervalID);
+  }, []);
+
   return (
     <div className={styles.player}>
       <main className={styles['player-main']}>
-        <h2>Current: {currentAudio.name}</h2>
+        <h2>Current: {currentAudio.name} {currentTime}</h2>
 
         {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#sizing_the_canvas_using_css_versus_html */}
         <canvas id='visualizer' ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
