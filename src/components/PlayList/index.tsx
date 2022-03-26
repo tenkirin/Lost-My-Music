@@ -9,7 +9,7 @@ import { PlayListProps } from '../../types';
 import styles from './styles.module.scss';
 import parentStyles from '../Player/styles.module.scss';
 
-const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
+const PlayList: FC<PlayListProps> = ({ setAudioSrc, currentAudio }) => {
   // TODO: use Set & MD5 to eliminate duplication
   const [audios, setAudios] = useState<string[]>(PRESET_AUDIOS);
 
@@ -24,6 +24,7 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
           <li
             key={audio}
             onClick={() => setAudioSrc(audio)}
+            className={audio === currentAudio ? 'selected' : ''}
           >
             {audio}
           </li>

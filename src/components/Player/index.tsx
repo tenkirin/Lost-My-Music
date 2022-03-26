@@ -61,7 +61,7 @@ const Player: FC = () => {
         </div>
       </main>
 
-      <PlayList setAudioSrc={setAudioSrc} />
+      <PlayList setAudioSrc={setAudioSrc} currentAudio={audioSrc} />
     </div>
   );
 };

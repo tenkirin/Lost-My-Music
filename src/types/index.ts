@@ -16,4 +16,5 @@ export interface UploaderProps {
 
 export interface PlayListProps {
   setAudioSrc: Dispatch<SetStateAction<string>>;
+  currentAudio: string;
 }
