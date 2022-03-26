@@ -5,6 +5,7 @@ import { ACCEPT_AUDIO_FORMATS } from '../../configs/audioConfigs';
 import { UploaderProps } from '../../types';
 
 import styles from './styles.module.scss';
+import parentStyles from '../Player/styles.module.scss';
 
 const Uploader: FC<UploaderProps> = ({ addAudios }) => {
   const onChange: ChangeEventHandler<HTMLInputElement> = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +18,7 @@ const Uploader: FC<UploaderProps> = ({ addAudios }) => {
   };
 
   return (
-    <label className={styles.uploader} >
+    <label className={[styles.uploader, parentStyles.uploader].join(' ')} >
       <span>Where's your music?</span>
       <input
         type="file"

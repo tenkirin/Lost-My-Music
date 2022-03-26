@@ -6,6 +6,9 @@ import { PRESET_AUDIOS } from '../../configs/audioConfigs';
 
 import { PlayListProps } from '../../types';
 
+import styles from './styles.module.scss';
+import parentStyles from '../Player/styles.module.scss';
+
 const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
   // TODO: use Set & MD5 to eliminate duplication
   const [audios, setAudios] = useState<string[]>(PRESET_AUDIOS);
@@ -15,7 +18,7 @@ const PlayList: FC<PlayListProps> = ({ setAudioSrc }) => {
   };
 
   return (
-    <div>
+    <div className={`${styles.playlist} ${parentStyles.playlist}`}>
       <ul>
         {[...audios].map(audio => (
           <li
