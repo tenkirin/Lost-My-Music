@@ -16,11 +16,12 @@
 
   h2 {
     width: 100%;
-    padding: 8px;
+    padding: 8px 16px;
     margin: 0;
     margin-bottom: 4px;
     color: #eee;
     font-size: 16px;
+    text-align: center;
     box-sizing: border-box;
     border-radius: 4px;
     background-image: linear-gradient(#404264, #10111a, #404264);
@@ -28,6 +29,27 @@
   }
 
   .player-main {
+    width: calc(720px + 4px * 2);
+
+    h2 {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      .current-name {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
+
+      .current-time {
+        margin-left: 16px;
+      }
+    }
+
     canvas {
       display: block;
       border: 4px solid #000;

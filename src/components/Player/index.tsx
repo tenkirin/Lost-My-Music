@@ -61,7 +61,10 @@ const Player: FC = () => {
   return (
     <div className={styles.player}>
       <main className={styles['player-main']}>
-        <h2>Current: {currentAudio.name} {currentTime}</h2>
+        <h2>
+          <span className={styles['current-name']}>{currentAudio.name}</span>
+          <span className={styles['current-time']}>{currentTime}</span>
+        </h2>
 
         {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#sizing_the_canvas_using_css_versus_html */}
         <canvas id='visualizer' ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
