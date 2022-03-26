@@ -10,6 +10,7 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  background-color: #eee;
 
   ::-webkit-scrollbar {
     width: 4px;
@@ -23,5 +24,10 @@ body {
 
   ::-webkit-scrollbar-track {
     background-color: transparent;
+  }
+
+  h1 {
+    font-style: italic;
+    font-size: 3em;
   }
 }
