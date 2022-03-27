@@ -98,6 +98,6 @@ export const drawBackground = (canvasEl: HTMLCanvasElement) => {
   const { canvasCtx, canvasWidth, canvasHeight } = getCanvasData(canvasEl);
 
   // draw background
-  canvasCtx.fillStyle = CANVAS_BGCOLOR; // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
+  canvasCtx.fillStyle = CANVAS_BGCOLOR; // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
   canvasCtx.fillRect(0, 0, canvasWidth, canvasHeight); // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect
 };

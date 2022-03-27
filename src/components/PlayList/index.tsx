@@ -26,7 +26,7 @@ const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
       <h2>Playlist</h2>
 
       <ul>
-        {[...audios].map(({ name, src }) => (
+        {audios.map(({ name, src }) => (
           <li
             key={src}
             onClick={() => setCurrentAudio({ name, src })}
