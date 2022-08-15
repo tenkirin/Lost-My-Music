@@ -17,41 +17,5 @@
     border: 2px solid rgba(255, 255, 255, 0.5);
     overflow-y: auto;
     background: #2a2a3e;
-
-    li {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      line-height: 24px;
-      box-sizing: border-box;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      margin: -0.5px 0;
-      color: #8e94b3;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.2s, color 0.2s;
-
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-
-      &:first-child {
-        margin-top: -1px;
-      }
-
-      &:last-child {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.75);
-      }
-
-      &:hover {
-        color: #fff;
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      &:global(.selected) {
-        color: #fff;
-        background-color: rgba(255, 255, 255, 0.3);
-      }
-    }
   }
 }

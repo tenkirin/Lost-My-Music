@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, MouseEventHandler, SetStateAction } from 'react';
 
 export interface AudioVisualizationConfig {
   barCount: number;
@@ -17,6 +17,11 @@ export interface UploaderProps {
 export interface PlayListProps {
   setCurrentAudio: Dispatch<SetStateAction<AudioInfo>>;
   currentAudio: AudioInfo;
+}
+
+export interface PlayListItemProps {
+  onClick?: MouseEventHandler;
+  className?: string;
 }
 
 export interface AudioInfo {

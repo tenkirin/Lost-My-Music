@@ -1,8 +1,11 @@
 import { FC, useState } from 'react';
 
 import Uploader from '../Uploader';
+import PlayListItem from '../PlayListItem';
 
 import { PRESET_AUDIOS } from '../../configs/audioConfigs';
+
+import { cls } from '../../utils/misc';
 
 import { AudioInfo, PlayListProps, UploaderProps } from '../../types';
 
@@ -22,18 +25,20 @@ const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
   };
 
   return (
-    <div className={`${styles.playlist} ${parentStyles.playlist}`}>
+    <div className={cls(styles.playlist, parentStyles.playlist)}>
       <h2>Playlist</h2>
 
       <ul>
         {audios.map(({ name, src }) => (
-          <li
+          <PlayListItem
             key={src}
             onClick={() => setCurrentAudio({ name, src })}
-            className={src === currentAudio.src ? 'selected' : ''}
+            className={cls(
+              src === currentAudio.src && 'selected',
+            )}
           >
             {name}
-          </li>
+          </PlayListItem>
         ))}
       </ul>
 
