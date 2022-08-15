@@ -20,6 +20,7 @@ export interface PlayListProps {
 }
 
 export interface PlayListItemProps {
+  content?: string;
   onClick?: MouseEventHandler;
   className?: string;
 }
