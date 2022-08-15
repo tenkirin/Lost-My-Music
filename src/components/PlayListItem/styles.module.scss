@@ -1,6 +1,5 @@
 .playlist-item {
   width: 100%;
-  padding: 8px;
   font-size: 14px;
   line-height: 24px;
   box-sizing: border-box;
@@ -11,9 +10,14 @@
   user-select: none;
   transition: background-color 0.2s, color 0.2s;
 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  .container {
+    box-sizing: border-box;
+    width: calc(100% - 8px * 2);
+    margin: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
   &:first-child {
     margin-top: -1px;
@@ -26,10 +30,32 @@
   &:hover {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
+
+    &:global(.overflowed) {
+      .content {
+        display: inline-block; // https://drafts.csswg.org/css-transforms/#transformable-element
+        animation: marquee 5s infinite linear;
+
+        &::after {
+          content: attr(data-content);
+          margin: 0 8px;
+        }
+      }
+    }
   }
 
   &:global(.selected) {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
   }
 }

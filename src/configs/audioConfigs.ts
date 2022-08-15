@@ -2,6 +2,7 @@ import lmmSrc from '../assets/平野綾 - Lost my music.flac';
 import gkSrc from '../assets/平野綾 - God knows....flac';
 import wyaSrc from '../assets/ONE OK ROCK - Wherever you are.flac';
 import kzkkdSrc from '../assets/ONE OK ROCK - 完全感覚Dreamer.flac';
+import rngwndrngSrc from '../assets/ONE OK ROCK - リングワンデルング.flac';
 
 import { AudioInfo } from '../types';
 
@@ -28,11 +29,17 @@ export const PRESET_AUDIOS: AudioInfo[] = [
   {
     name: getFileName(gkSrc),
     src: gkSrc,
-  }, {
+  },
+  {
     name: getFileName(wyaSrc),
     src: wyaSrc,
-  }, {
+  },
+  {
     name: getFileName(kzkkdSrc),
     src: kzkkdSrc,
+  },
+  {
+    name: getFileName(rngwndrngSrc),
+    src: rngwndrngSrc,
   },
 ];

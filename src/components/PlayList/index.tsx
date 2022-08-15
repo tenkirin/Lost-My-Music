@@ -32,13 +32,12 @@ const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
         {audios.map(({ name, src }) => (
           <PlayListItem
             key={src}
+            content={name}
             onClick={() => setCurrentAudio({ name, src })}
             className={cls(
               src === currentAudio.src && 'selected',
             )}
-          >
-            {name}
-          </PlayListItem>
+          />
         ))}
       </ul>
 
