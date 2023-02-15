@@ -1,3 +1,5 @@
+import { getFileName } from '../utils/misc';
+
 import lmmSrc from '../assets/平野綾 - Lost my music.flac';
 import gkSrc from '../assets/平野綾 - God knows....flac';
 import wyaSrc from '../assets/ONE OK ROCK - Wherever you are.flac';
@@ -15,11 +17,6 @@ export const ACCEPT_AUDIO_FORMATS = [
   'audio/mpeg',
   'audio/wav',
 ].join();
-
-const getFileName: (name: string) => string = filename => filename.slice(
-  filename.lastIndexOf('/') + 1,
-  filename.lastIndexOf('.', filename.lastIndexOf('.') - 1), // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf#parameters
-);
 
 export const PRESET_AUDIOS: AudioInfo[] = [
   {
