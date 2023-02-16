@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, memo, useState } from 'react';
 
 import Uploader from '../Uploader';
 import PlayListItem from '../PlayListItem';
@@ -12,7 +12,7 @@ import { AudioInfo, PlayListProps, UploaderProps } from '../../types';
 import styles from './styles.module.scss';
 import parentStyles from '../Player/styles.module.scss';
 
-const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
+const PlayList: FC<PlayListProps> = memo(({ setCurrentAudio, currentAudio }) => {
   // TODO: use Set & MD5 to eliminate duplication
   const [audios, setAudios] = useState<AudioInfo[]>(PRESET_AUDIOS);
 
@@ -44,6 +44,8 @@ const PlayList: FC<PlayListProps> = ({ setCurrentAudio, currentAudio }) => {
       <Uploader addAudios={addAudios} />
     </div>
   );
-};
+});
+
+PlayList.displayName = 'PlayList';
 
 export default PlayList;

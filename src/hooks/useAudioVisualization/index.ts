@@ -2,7 +2,7 @@
  * see https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
  */
 
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { drawBackground, drawBars, drawFloats } from './drawUtils';
 
@@ -25,7 +25,7 @@ const useAudioVisualization = (config?: AudioVisualizationConfig) => {
     drawFloats(canvasEl, frequencies, floatYs.current);
   };
 
-  const drawEachFrame = (audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
+  const drawEachFrame = useCallback((audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement, frequencies: Uint8Array) => {
     if (analyserRef.current) {
       // get data and fill frequencies array
       analyserRef.current.getByteFrequencyData(frequencies);  // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData
@@ -41,9 +41,16 @@ const useAudioVisualization = (config?: AudioVisualizationConfig) => {
         );  // https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame
       }
     }
-  };
+  }, []);
 
-  const startVisualization = (audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement) => {
+  const cancelVisualization = useCallback(() => {
+    if (animationFrameIDRef.current) {
+      cancelAnimationFrame(animationFrameIDRef.current);
+      animationFrameIDRef.current = 0;
+    }
+  }, []);
+
+  const startVisualization = useCallback((audioEl: HTMLAudioElement, canvasEl: HTMLCanvasElement) => {
     // cancel last time visualization to avoid mixed animation: only one animation at the same time
     cancelVisualization();
 
@@ -73,20 +80,13 @@ const useAudioVisualization = (config?: AudioVisualizationConfig) => {
 
     // draw for each frame
     drawEachFrame(audioEl, canvasEl, frequencies);
-  };
+  }, [cancelVisualization, config?.barCount, drawEachFrame]);
 
-  const cancelVisualization = () => {
-    if (animationFrameIDRef.current) {
-      cancelAnimationFrame(animationFrameIDRef.current);
-      animationFrameIDRef.current = 0;
-    }
-  };
-
-  const initVisualization = (canvasEl: HTMLCanvasElement) => {
+  const initVisualization = useCallback((canvasEl: HTMLCanvasElement) => {
     const defaultLength = FFT_SIZE / 2; // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/frequencyBinCount#value
     const bufferLength = Math.min(defaultLength, config?.barCount ?? Infinity);
     drawCanvas(canvasEl, new Uint8Array(bufferLength).fill(0));
-  };
+  }, [config?.barCount]);
 
   return {
     initVisualization,

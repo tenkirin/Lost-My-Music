@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import PlayList from '../PlayList';
 
@@ -24,7 +24,7 @@ const Player: FC = () => {
     initVisualization,
   } = useAudioVisualization(VISUAL_CONFIG);
 
-  const onPlay = async () => {
+  const onPlay = useCallback(async () => {
     if (audioRef.current) {
       // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
       try {
@@ -37,7 +37,7 @@ const Player: FC = () => {
         if (err instanceof Error && !err.message.includes('interrupted')) throw err;
       }
     }
-  };
+  }, [startVisualization]);
 
   useEffect(() => {
     if (canvasRef.current) {
