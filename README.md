@@ -8,7 +8,7 @@ A simple music player with visualization.
 
 [![The snapshot of this project](snapshot.png)](https://lost-my-music.gatsbytes.dev/)
 
-### Requirements:
+### Requirements
 
 -   Node >= 18
 
