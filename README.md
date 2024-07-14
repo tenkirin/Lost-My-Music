@@ -6,7 +6,7 @@
 
 A simple music player with visualization.
 
-[![The snapshot of this project](snapshot.png)](https://lost-my-music.gatsbytes.dev/)
+[![The snapshot of this project](snapshot.png)](https://lost-my-music.netlify.app/)
 
 ### Requirements
 
